@@ -60,6 +60,7 @@ function generateGrid(){
   if(width > height){
     // document.documentElement.style.cssText = "overflow-y:hidden";
   }
+  //for mobile if h>w else desktop
   let rows = height > width ? Math.floor(grid.offsetHeight / NODE_SIZE) : Math.floor((height - document.querySelector(".buttons-container").offsetHeight)/ NODE_SIZE);
   let cols = Math.floor(grid.offsetWidth / NODE_SIZE);
   let startRndRow = Math.floor(Math.random() * rows);
@@ -138,14 +139,17 @@ function generateGrid(){
     prevEnd = null;
     grid.addEventListener("mouseout",divOut);
   }
+  //takes care of mouse drag movements
   let mouseMoveClbk = (e) =>{
     e.preventDefault();
+    //extracting nodes position
     let row = e.target.dataset["row"];
     let col = e.target.dataset["col"];
     if(e.target === grid || e.target.classList.contains("grid-row"))
     {
       return;
     }
+    //node removal
     if(mouseDown){
       if(e.which === 3){
         e.target.classList.remove("node-wall");
@@ -160,6 +164,7 @@ function generateGrid(){
         }
         return;
       }
+      //node start movement & placement
       if(prev && !nodes[row][col].isWall){
         prev.divReference.classList.remove("node-start");
         prev.isStart = false;
@@ -173,7 +178,7 @@ function generateGrid(){
         }
         return;
       }
-
+        //node end placement and movement
       if(prevEnd && !nodes[row][col].isWall){
         prevEnd.divReference.classList.remove("node-end");
         prevEnd.isEnd = false;
@@ -191,6 +196,7 @@ function generateGrid(){
 
         return;
       }
+      //weight assignments to nodes
       if(e.shiftKey){
         e.target.classList.add("node-strong-1");
         nodes[row][col].weight = 2;
